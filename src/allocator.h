@@ -2,7 +2,7 @@
 #include <deque>
 #include <vector>
 
-template<typename T, int step = 10>
+template<typename T>
 class allocator {
 public:
     using value_type = T;
@@ -15,7 +15,7 @@ public:
         using other = allocator<U>;
     };
 
-    allocator() = default;
+    allocator(int step=10): step(step) {};
     ~allocator() {
     for (auto& block: blocks) {
         std::free(block);
@@ -62,6 +62,8 @@ public:
     }
 
 private:
+    int step;
+
     std::deque<pointer> pool;
     std::vector<void*> blocks;
 
