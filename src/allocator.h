@@ -34,14 +34,14 @@ public:
             }
         }
         pointer result = pool.front();
-        for (int i = 0; i < n; ++i) {
+        for (size_type i = 0; i < n; ++i) {
             pool.pop_front();
         }
         return result;
     }
 
     void deallocate(pointer p, size_type n) {
-        for (int i = 0; i < n; i++) {
+        for (size_type i = 0; i < n; i++) {
             pool.push_front(p);
             p++;
         }

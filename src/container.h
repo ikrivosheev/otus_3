@@ -54,10 +54,31 @@ public:
     using reference = typename node_type::reference;
     using const_reference = typename node_type::const_reference;
     using iterator = ListIterator<node_type>;
+    using const_iterator = ListIterator<const node_type>;
     using allocator_type = Allocator;
     using size_type = std::size_t;
 
     List(): _allocator() {}
+
+    List(size_type count) {
+        for (size_type i = 0; i < count; ++i) {
+            this->push_back(T());
+        }
+    }
+
+    List(const List<T>& lst) {
+        for (auto it = lst.cbegin(); it != lst.cend(); ++it) {
+            this->push_back(*it);
+        }
+    }
+    
+    template<typename InputIt>
+    List(InputIt first, InputIt end) {
+        for (auto it = begin; it != end; ++it) {
+            this->push_back(*it);
+        }
+    }
+
     ~List() {
         while (this->_front != nullptr) {
             this->_allocator.deallocate(&this->_front->value, 1);
@@ -110,6 +131,14 @@ public:
 
     iterator end() {
         return iterator(nullptr);
+    }
+
+    const_iterator cbegin() {
+        return const_iterator(this->_front);
+    }
+
+    const_iterator cend() {
+        return const_iterator(nullptr);
     }
 
     size_type size() const {
